@@ -29,6 +29,7 @@ class PostCreateSerializer(serializers.ModelSerializer):
     """Сериалайзер постов для создания"""
 
     time = serializers.DateTimeField(format=DATETIME_FORMAT, read_only=True)
+    title = serializers.CharField(max_length=100, required=False)
 
     class Meta:
         model = models.Post
@@ -50,7 +51,7 @@ class ProfileDetailSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(source="user.email", read_only=True)
     posts = PostWithoutAuthorSerializer(read_only=True, many=True)
     id = serializers.IntegerField(read_only=True)
-    image = Base64ImageField()
+    image = Base64ImageField(required=False)
 
     class Meta:
         model = models.Profile
