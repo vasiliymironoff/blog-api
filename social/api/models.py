@@ -53,9 +53,9 @@ class Message(models.Model):
     """Сообщение"""
     sender = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='send')
     recipient = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='received')
-    text = models.TextField("Сообщение")
+    text = models.TextField("Сообщение", null=True, blank=True, default="")
     image = models.ImageField("Фото", null=True, blank=True, default="")
-    time = models.DateTimeField("Время", auto_now=True)
+    time = models.DateTimeField("Время", auto_now_add=True)
 
     def __str__(self):
         return str(self.sender) + " - " + str(self.recipient)

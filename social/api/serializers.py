@@ -22,7 +22,7 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Post
-        fields = ("author", 'text', 'title', 'time')
+        fields = ("id", "author", 'text', 'title', 'time')
 
 
 class PostCreateSerializer(serializers.ModelSerializer):
@@ -57,7 +57,6 @@ class ProfileDetailSerializer(serializers.ModelSerializer):
         model = models.Profile
         fields = ("status",
                   "about",
-                  "birth_date",
                   'image',
                   'is_men',
                   "username",
@@ -65,24 +64,11 @@ class ProfileDetailSerializer(serializers.ModelSerializer):
                   "posts",
                   "id")
 
-    def create(self, validated_data):
-        image = validated_data.pop('image')
-        status = validated_data.pop("status")
-        about = validated_data.pop("about")
-        is_men = validated_data.pop("is_men")
-        birth_date = validated_data.pop("birth_date")
-
-        return ProfileDetailSerializer.objects.create(image=image,
-                                                      status=status,
-                                                      about=about,
-                                                      is_men=is_men,
-                                                      birth_date=birth_date
-                                                      )
-
 
 class MessageSerializer(serializers.ModelSerializer):
     """Сезиалайзер сообщений"""
     image = Base64ImageField(required=False)
+    text = serializers.CharField(required=False)
     time = serializers.DateTimeField(format=DATETIME_FORMAT, read_only=True)
 
     class Meta:
@@ -93,18 +79,3 @@ class MessageSerializer(serializers.ModelSerializer):
                   "time",
                   "sender",
                   "recipient")
-
-    def create(self, validated_data):
-        text = validated_data.pop("text")
-        sender = validated_data.pop("sender")
-        recipient = validated_data.pop("recipient")
-        try:
-            image = validated_data.pop("image")
-            return models.Message.objects.create(text=text,
-                                                 image=image,
-                                                 sender=sender,
-                                                 recipient=recipient)
-        except:
-            return models.Message.objects.create(text=text,
-                                                 sender=sender,
-                                                 recipient=recipient)
