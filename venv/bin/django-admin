@@ -1,4 +1,4 @@
-#!/home/user/PycharmProjects/SocialProject/venv/bin/python
+#!/home/user/prog/project/blog-api/venv/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys
